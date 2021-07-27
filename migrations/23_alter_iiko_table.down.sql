@@ -1,0 +1,1 @@
+alter table iiko_credenetials drop column dispatcher_id;

@@ -1,0 +1,1 @@
+alter table shippers add column enable_courier_working_hours boolean default false;

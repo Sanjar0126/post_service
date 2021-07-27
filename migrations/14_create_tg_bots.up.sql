@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS tgbots (
+    shipper_id uuid PRIMARY KEY,
+    bot_token VARCHAR NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at INTEGER DEFAULT 0
+
+);
