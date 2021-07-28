@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS payme_info;
-DROP TABLE IF EXISTS click_info;

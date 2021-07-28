@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS iiko_credentials; 

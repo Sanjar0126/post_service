@@ -3,7 +3,7 @@ package grpc_client
 import (
 	"fmt"
 
-	"gitlab.udevs.io/delever/delever_user_service/config"
+	"github.com/Sanjar0126/post_service/config"
 	"google.golang.org/grpc"
 
 	pb "genproto/order_service"

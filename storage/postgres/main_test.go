@@ -6,8 +6,8 @@ import (
 	"os"
 	"testing"
 
-	"gitlab.udevs.io/delever/delever_user_service/config"
-	"gitlab.udevs.io/delever/delever_user_service/storage"
+	"../config"
+	"../storage"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"

@@ -1,1 +1,0 @@
-alter table shippers drop column crm;

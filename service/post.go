@@ -5,17 +5,19 @@ import (
 	"database/sql"
 	"fmt"
 	pb "genproto/post_service"
+	"github.com/Sanjar0126/post_service/pkg/logger"
+	"github.com/Sanjar0126/post_service/storage"
 	gpb "github.com/golang/protobuf/ptypes/empty"
-	"gitlab.udevs.io/delever/delever_user_service/pkg/logger"
-	"gitlab.udevs.io/delever/delever_user_service/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type PostService struct {
+	pb.UnimplementedPostServiceServer
 	storage storage.StorageI
 	logger logger.Logger
 }
+
 
 func NewPostService(strg storage.StorageI, log logger.Logger) *PostService {
 	return &PostService{

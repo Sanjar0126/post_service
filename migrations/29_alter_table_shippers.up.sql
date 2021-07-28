@@ -1,1 +1,0 @@
-ALTER TABLE shippers ADD COLUMN distance numeric(15, 4);

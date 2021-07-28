@@ -1,1 +1,0 @@
-alter table customers add column is_aggregate boolean default false;

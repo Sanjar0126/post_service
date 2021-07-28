@@ -3,10 +3,9 @@ package postgres
 import (
 	"database/sql"
 	pb "genproto/post_service"
+	"github.com/Sanjar0126/post_service/storage/repo"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"gitlab.udevs.io/delever/delever_user_service/pkg/etc"
-	"gitlab.udevs.io/delever/delever_user_service/storage/repo"
 )
 
 type postRepo struct {
@@ -22,9 +21,9 @@ func NewPostRepo(db *sqlx.DB) repo.PostStorageI {
 
 func (pr *postRepo) Create(post *pb.Post) (string, error) {
 	var (
-		title  sql.NullString = etc.NullString(post.Title)
-		body   sql.NullString = etc.NullString(post.Body)
-		author sql.NullString = etc.NullString(post.Author)
+		title  string
+		body   string
+		author string
 	)
 
 	id, err := uuid.NewRandom()
