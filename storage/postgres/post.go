@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	pb "genproto/post_service"
 	"github.com/Sanjar0126/post_service/storage/repo"
-	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"time"
 )
 
 type postRepo struct {
@@ -19,39 +19,32 @@ func NewPostRepo(db *sqlx.DB) repo.PostStorageI {
 	}
 }
 
-func (pr *postRepo) Create(post *pb.Post) (string, error) {
+func (pr *postRepo) Create(post *pb.Post) (*pb.Post, error) {
 	var (
-		title  string
-		body   string
-		author string
+		layoutdate string = "2019-03-21 21:11:43"
 	)
-
-	id, err := uuid.NewRandom()
-	if err != nil {
-		return "", nil
-	}
+	post.CreatedAt = time.Now().Format(layoutdate)
 
 	insertNew :=
 		`INSERT INTO
-		posts (id, title, body, author, created_at) 
-		values ($1, $2, $3, $4, $5)`
+		posts (title, body, author, created_at) 
+		values ($1, $2, $3, $4) RETURNING id`
 
-	_, err = pr.db.Exec(
+	err := pr.db.QueryRow(
 		insertNew,
-		id.String(),
-		title,
-		body,
-		author,
-		post.GetCreatedAt(),
-	)
+		post.Title,
+		post.Body,
+		post.Author,
+		post.CreatedAt,
+	).Scan(&post.Id)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return id.String(), nil
+	return post, nil
 }
 
-func (pr *postRepo) Get(id string) (*pb.Post, error) {
+func (pr *postRepo) Get(id uint32) (*pb.Post, error) {
 	var (
 		post pb.Post
 	)
@@ -110,6 +103,7 @@ func (pr *postRepo) GetAll(page, limit uint64) ([]*pb.Post, uint64, error) {
 		if err != nil {
 			return nil, 0, err
 		}
+		posts = append(posts, &p)
 	}
 
 	rows, err = pr.db.NamedQuery(`
@@ -139,7 +133,7 @@ func (pr *postRepo) GetAll(page, limit uint64) ([]*pb.Post, uint64, error) {
 func (pr *postRepo) Update(post *pb.Post) error {
 
 	updateQuery := `
-			UPDATE posts set title=$1, body=$2, author=$3 where id=&4
+			UPDATE posts set title=$1, body=$2, author=$3 where id=$4
 		`
 
 	result, err := pr.db.Exec(updateQuery, post.GetTitle(), post.GetBody(), post.GetAuthor(), post.GetId())
@@ -154,8 +148,8 @@ func (pr *postRepo) Update(post *pb.Post) error {
 	return nil
 }
 
-func (pr *postRepo) Delete(id string) error {
-	result, err := pr.db.Exec("delete from posts where id="+id)
+func (pr *postRepo) Delete(id uint32) error {
+	result, err := pr.db.Exec("delete from posts where id=$1", id)
 	if err != nil {
 		return err
 	}

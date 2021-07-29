@@ -23,8 +23,8 @@ type Config struct {
 	MapURL           string
 	MapKey           string
 
-	OrderServiceHost string
-	OrderServicePort int
+	PostServiceHost string
+	PostServicePort int
 
 	JowiAPIKey    string
 	JowiAPISecret string
@@ -42,8 +42,8 @@ func Load() Config {
 	c.PostgresUser = cast.ToString(getOrReturnDefault("POSTGRES_USER", "strapi"))
 	c.PostgresPassword = cast.ToString(getOrReturnDefault("POSTGRES_PASSWORD", "strapi"))
 
-	c.OrderServiceHost = cast.ToString(getOrReturnDefault("ORDER_SERVICE_HOST", "order-service"))
-	c.OrderServicePort = cast.ToInt(getOrReturnDefault("ORDER_SERVICE_PORT", 80))
+	c.PostServiceHost = cast.ToString(getOrReturnDefault("POST_SERVICE_HOST", "post-service"))
+	c.PostServicePort = cast.ToInt(getOrReturnDefault("POST_SERVICE_PORT", 80))
 
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
 	c.RPCPort = cast.ToString(getOrReturnDefault("RPC_PORT", ":8003"))

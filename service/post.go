@@ -26,15 +26,13 @@ func NewPostService(strg storage.StorageI, log logger.Logger) *PostService {
 	}
 }
 
-func (s *PostService) Create(ctx context.Context, req *pb.Post) (*pb.PostId, error){
-	postId, err := s.storage.Post().Create(req)
+func (s *PostService) Create(ctx context.Context, req *pb.Post) (*pb.Post, error){
+	post, err := s.storage.Post().Create(req)
 	if err != nil{
 		return nil, handleError(s.logger, err, "error while creating new post", req)
 	}
 
-	return &pb.PostId{
-		Id: postId,
-	}, nil
+	return post, nil
 }
 
 func (s *PostService) Get(ctx context.Context, req *pb.PostId) (*pb.Post, error) {

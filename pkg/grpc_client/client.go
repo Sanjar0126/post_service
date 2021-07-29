@@ -6,11 +6,11 @@ import (
 	"github.com/Sanjar0126/post_service/config"
 	"google.golang.org/grpc"
 
-	pb "genproto/order_service"
+	pb "genproto/post_service"
 )
 
 type GrpcClientI interface {
-	CustomerOrderService() pb.CustomerServiceClient
+	CustomerOrderService() pb.PostServiceClient
 }
 
 type GrpcClient struct {
@@ -20,22 +20,22 @@ type GrpcClient struct {
 
 func New(cfg config.Config) (*GrpcClient, error) {
 	connOrder, err := grpc.Dial(
-		fmt.Sprintf("%s:%d", cfg.OrderServiceHost, cfg.OrderServicePort),
+		fmt.Sprintf("%s:%d", cfg.PostServiceHost, cfg.PostServicePort),
 		grpc.WithInsecure(),
 	)
 	if err != nil {
-		return nil, fmt.Errorf("order service dial host: %s port: %d",
-			cfg.OrderServiceHost, cfg.OrderServicePort)
+		return nil, fmt.Errorf("post service dial host: %s port: %d",
+			cfg.PostServiceHost, cfg.PostServicePort)
 	}
 
 	return &GrpcClient{
 		cfg: cfg,
 		connections: map[string]interface{}{
-			"order_service": pb.NewCustomerServiceClient(connOrder),
+			"post_service": pb.NewPostServiceClient(connOrder),
 		},
 	}, nil
 }
 
-func (g *GrpcClient) CustomerOrderService() pb.CustomerServiceClient {
-	return g.connections["order_service"].(pb.CustomerServiceClient)
+func (g *GrpcClient) CustomerOrderService() pb.PostServiceClient {
+	return g.connections["post_service"].(pb.PostServiceClient)
 }

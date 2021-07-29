@@ -19,7 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
-	Create(ctx context.Context, in *Post, opts ...grpc.CallOption) (*PostId, error)
+	Create(ctx context.Context, in *Post, opts ...grpc.CallOption) (*Post, error)
 	Get(ctx context.Context, in *PostId, opts ...grpc.CallOption) (*Post, error)
 	GetAll(ctx context.Context, in *GetAllPostsRequest, opts ...grpc.CallOption) (*GetAllPostsResponse, error)
 	Update(ctx context.Context, in *Post, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -34,8 +34,8 @@ func NewPostServiceClient(cc grpc.ClientConnInterface) PostServiceClient {
 	return &postServiceClient{cc}
 }
 
-func (c *postServiceClient) Create(ctx context.Context, in *Post, opts ...grpc.CallOption) (*PostId, error) {
-	out := new(PostId)
+func (c *postServiceClient) Create(ctx context.Context, in *Post, opts ...grpc.CallOption) (*Post, error) {
+	out := new(Post)
 	err := c.cc.Invoke(ctx, "/genproto.PostService/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func (c *postServiceClient) Delete(ctx context.Context, in *DeletePostRequest, o
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
 type PostServiceServer interface {
-	Create(context.Context, *Post) (*PostId, error)
+	Create(context.Context, *Post) (*Post, error)
 	Get(context.Context, *PostId) (*Post, error)
 	GetAll(context.Context, *GetAllPostsRequest) (*GetAllPostsResponse, error)
 	Update(context.Context, *Post) (*emptypb.Empty, error)
@@ -95,7 +95,7 @@ type PostServiceServer interface {
 type UnimplementedPostServiceServer struct {
 }
 
-func (UnimplementedPostServiceServer) Create(context.Context, *Post) (*PostId, error) {
+func (UnimplementedPostServiceServer) Create(context.Context, *Post) (*Post, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedPostServiceServer) Get(context.Context, *PostId) (*Post, error) {
